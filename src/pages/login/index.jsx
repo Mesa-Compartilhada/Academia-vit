@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,8 +19,15 @@ export default function Login() {
       body: JSON.stringify({ email, password })
     });
     let dado = await result.json()
-    console.log(dado.user);
     localStorage.setItem("nome", JSON.stringify(dado.user))
+
+    if(dado.user) 
+    {
+      navigate("/")
+    }
+    else {
+      setError(dado.message)
+    }
   };
 
   return (

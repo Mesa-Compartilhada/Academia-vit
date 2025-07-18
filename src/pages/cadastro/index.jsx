@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cadastro() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Treinador');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ export default function Cadastro() {
       return;
     }
 
-    await fetch("http://localhost:8080/api/auth/register", {
+    const result = await fetch("http://localhost:8080/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -25,8 +26,13 @@ export default function Cadastro() {
       body: JSON.stringify({ name, email, password, role }),
     });
 
-    setSuccess(true);
-    setError('');
+    const json = await result.json()
+
+    if(json.user) {
+      setSuccess(true);
+      setError('');
+      navigate("/login")
+    }
   };
 
   return (
