@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function Treino() {
+export default function FormAddTreinos() {
   const [name, setName] = useState('');
   const [frequency, setFrequency] = useState('');
   const [exercises, setExercises] = useState('');
   const [userId, setUserId] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const response = await fetch("http://localhost:8080/api/users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        
+        setUsers(data.users);
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+      }
+    }
+
+    fetchUsers();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,12 +55,16 @@ export default function Treino() {
         throw new Error(data.message || 'Erro ao criar rotina');
       }
 
-      setSuccess('Rotina criada com sucesso!');
-      setName('');
-      setFrequency('');
-      setExercises('');
-      setUserId('');
-      console.log(data)
+      if(data.status) {
+        setSuccess('Rotina criada com sucesso!');
+        setName('');
+        setFrequency('');
+        setExercises('');
+        setUserId('');
+      }
+      else {
+        setError(data.message)
+      }
     } catch (err) {
       setError(err.message);
     }
@@ -93,17 +119,19 @@ export default function Treino() {
             />
           </div>
 
-          <div className="mb-6">
-            <label htmlFor="userId" className="block text-sm font-medium text-gray-300">ID do Usuário</label>
-            <input
-              id="userId"
-              type="text"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              className="mt-2 p-2 w-full bg-gray-900 border border-blue-700 rounded-md text-white placeholder-gray-400"
-              placeholder="ID do usuário"
-              required
-            />
+          <div className="mb-4">
+            <label htmlFor="user_id" className="block text-sm font-medium text-gray-300">Aluno</label>
+            <select name='user_id' id='user_id'
+            onChange={(e) => setUserId(e.target.value)}
+            >
+              <option className='text-black' value={null}>Selecione um aluno</option>
+              {
+                users.filter(user => user.role === "Aluno")
+                  .map(user => (
+                    <option className='text-black' value={user.id} key={user.id}>{user.name}</option>
+                  ))
+              }
+            </select>
           </div>
 
           <button
