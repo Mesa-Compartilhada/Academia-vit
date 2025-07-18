@@ -15,7 +15,9 @@ export default function Login() {
       },
       body: JSON.stringify({ email, password })
     });
-    console.log(await result.json());
+    let dado = await result.json()
+    console.log(dado.user);
+    localStorage.setItem("nome", JSON.stringify(dado.user))
   };
 
   return (

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Cadastro from './pages/cadastro';
 import Home from './pages/home';
 import Login from './pages/login';
-import Treino from './pages/treino';
+import Treinamentos from './pages/treino';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/Treino" element={<Treino />} />
+        <Route path="/Treino" element={<Treinamentos />} />
 
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export default function Cadastro() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('Treinador');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -53,15 +53,12 @@ export default function Cadastro() {
 
           <div className="mb-4">
             <label htmlFor="role" className="block text-sm font-medium text-gray-300">Role</label>
-            <input
-              id="role"
-              type="text"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="mt-2 p-2 w-full bg-gray-900 border border-blue-700 rounded-md text-white placeholder-gray-400"
-              placeholder="Digite seu cargo"
-              required
-            />
+            <select name='role' id='role'
+            onChange={(e) => setRole(e.target.value)}
+            >
+              <option value={"Treinador"}>Treinador</option>
+              <option value={"Aluno"}>Aluno</option>
+            </select>
           </div>
 
           <div className="mb-4">
